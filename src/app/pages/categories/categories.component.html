@@ -1,0 +1,18 @@
+<mat-expansion-panel class="w-[220px]" *ngIf="categories">
+  <mat-expansion-panel-header>
+    <mat-panel-title> Категории </mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-selection-list [multiple]="false">
+    <mat-list-option (click)="onShowCategory('')">
+      <span class="pt-9 text-[1.4rem]">Вcе</span>
+      <span class="flex text-[1.4rem]">продукты</span></mat-list-option
+    >
+    <mat-list-option
+      *ngFor="let category of categories"
+      [value]="category"
+      (click)="onShowCategory(category)"
+      >
+      <p class="pt-4 text-[1.4rem]">{{ category }}</p>
+    </mat-list-option>
+  </mat-selection-list>
+</mat-expansion-panel>

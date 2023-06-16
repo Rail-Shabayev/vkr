@@ -1,0 +1,77 @@
+<mat-toolbar class="mx-auto border-x justify-between">
+  <a routerLink="home" class="cursor-pointer">Rail Shabayev</a>
+  <div>
+    <div class="text-3xl font-normal mx-8 my-2">
+      <button mat-icon-button [mat-menu-trigger-for]="profile">
+        <mat-icon>face</mat-icon>
+      </button>
+      <mat-menu #profile="matMenu" class="">
+        <!-- <button routerLink="login">Log in</button> -->
+        <div class="pt-3 px-5">
+          <p>Имя: Rail</p>
+          <p>Город: Москва</p>
+          <p>Статус: 🟢 Онлайн</p>
+        </div>
+        <button class="px-5 mx-5 bg-red-300 rounded-xl" (click)="logout()">
+          Выйти
+        </button>
+      </mat-menu>
+
+      <button routerLink="/orders" class="mx-8" mat-icon-button>
+        <mat-icon >card_travel</mat-icon>
+      </button>
+      <button mat-icon-button [mat-menu-trigger-for]="menu">
+        <mat-icon
+          [matBadge]="itemsQuantity"
+          [matBadgeHidden]="!itemsQuantity"
+          matBadgeColor="warn"
+          >shopping_cart</mat-icon
+        >
+      </button>
+      <mat-menu #menu="matMenu">
+        <div class="px-2 pt-4 divide-y divide-solid">
+          <div class="pb-3 flex justify-between">
+            <span class="mr-3">Товаров: {{ itemsQuantity }}</span>
+            <a routerLink="cart" class="cursor-pointer">Перейти в корзину</a>
+          </div>
+          <div *ngIf="itemsQuantity" class="py-4">
+            <div
+              *ngFor="let item of cart.items"
+              class="flex justify-between font-light mb-2"
+            >
+              <p>
+                <span class="truncate-text"
+                  ><b class="font-bold">{{ item.quantity }}</b> x
+                  {{ item.name }}</span
+                >
+              </p>
+              <span class="pl-8 flex justify-between font-bold">{{
+                item.price | currency : "RUS" : "₽" : "1.0"
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-4 pb-4 justify-between font-light flex">
+          Итог:
+          <span class="font-bold">{{
+            getTotal(cart.items) | currency : "RUS" : "₽" : "1.0"
+          }}</span>
+        </div>
+        <div class="pt-3 px-3 flex justify-between">
+          <button
+            (click)="onClearCart()"
+            class="bg-rose-600 text-white pt-3 rounded-full w-20"
+          >
+            <mat-icon>remove_shopping_cart</mat-icon>
+          </button>
+          <button
+            (click)="onCheckout()"
+            class="bg-green-600 text-white pt-3 rounded-full w-20"
+          >
+            <mat-icon>shopping_cart_checkout</mat-icon>
+          </button>
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>

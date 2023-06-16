@@ -1,0 +1,104 @@
+<div class="container m-5 h-min-[820px]">
+  <div class="col-md-3">
+    <section class="panel">
+      <div class="panel-body">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          (input)="loadProducts()"
+          placeholder="Поиск"
+          class="form-control"
+        />
+      </div>
+    </section>
+    <section class="panel">
+      <app-categories
+        (showCategory)="onShowNewCategory($event)"
+      ></app-categories>
+    </section>
+  </div>
+  <div class="col-md-9">
+    <section class="panel">
+      <div class="panel-body">
+        <div class="">
+          <div class="pull-right flex flex-col">
+            <pagination-controls
+              (pageChange)="p = $event"
+              nextLabel="Вперёд"
+              previousLabel="Обратно"
+            ></pagination-controls>
+          </div>
+          <button class="px-3 pt-2" (click)="onColumnsUpdated(1)">
+            <mat-icon class="scale-125">view_list</mat-icon>
+          </button>
+          <button class="px-3 pt-2" (click)="onColumnsUpdated(3)">
+            <mat-icon class="scale-125">view_module</mat-icon>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="row product-list">
+      <div
+        *ngFor="
+          let product of products
+            | paginate : { itemsPerPage: itemsPerPage, currentPage: p }
+        "
+        class="col-md-4"
+        [ngClass]="{ 'w-full': fullWidthMode, 'w-min-[240px]' : !fullWidthMode }"
+      >
+        <section class="panel" [ngClass]="{ flex: fullWidthMode }">
+          <div class="pro-img-box">
+            <div
+              class="flex items-center justify-center ml-2.5 h-[210px] w-[208px]"
+            >
+              <img
+                class="h-auto"
+                src="{{ product.imageUrl }}"
+                alt="product image"
+              />
+            </div>
+          </div>
+
+          <div
+            class="panel-body"
+            [ngClass]="{
+              'text-center': !fullWidthMode,
+              'px-8 flex flex-row justify-between': fullWidthMode
+            }"
+          >
+            <p
+              class="pro-title"
+              [ngClass]="{ 'truncate max-w-xs block': !fullWidthMode }"
+            >
+              {{ product.name }}
+              <span class="flex text-base" *ngIf="fullWidthMode"> Описание: </span>
+              <span class="flex text-base" *ngIf="fullWidthMode">
+                {{ product.descr }}
+              </span>
+            </p>
+            <div>
+              <p
+                [ngClass]="{
+                  'pt-7': fullWidthMode
+                }"
+              >
+                {{ product.price | currency : "RUS" : "₽" : "3.0" }}
+              </p>
+
+              <button class="pl-3" (click)="onAddToCart(product)">
+                <mat-icon
+                  class="adtocart pt-4"
+                  [ngClass]="{
+                    'left-[40%] top-[190px] absolute': !fullWidthMode
+                  }"
+                  >shopping_cart</mat-icon
+                >
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
